@@ -1,0 +1,13 @@
+[Interface]
+Address = {{ wg_client_ip }}/24
+PrivateKey = {{ key_files.results[0].stdout }}
+
+{% for host in groups['wg_server'] %}
+{% if hostvars[host]['wg_server_ip'] is defined and hostvars[host]['wg_server_public_key'] is defined %}
+[Peer]
+PublicKey = {{ hostvars[host]['wg_server_public_key'] }}
+AllowedIps = {{ hostvars[host]['wg_subnet'] }}/24
+Endpoint = {{ hostvars[host]['wg_server_inet_ip'] }}:{{ hostvars[host]['wg_listen_port'] }}
+PersistentKeepalive = 21
+{% endif %}
+{% endfor %}

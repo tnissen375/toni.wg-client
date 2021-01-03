@@ -1,0 +1,43 @@
+---
+- name: Register client key files
+  command: "cat {{ wg_dir }}/{{ item }}"
+  register: key_files
+  loop:
+    - "{{ wg_interface|quote }}_privatekey"
+    - "{{ wg_interface|quote }}_publickey"
+
+- name: Configure Client
+  notify: restart wireguard
+  template:
+    src: interface.conf.j2
+    dest: "/etc/wireguard/{{ wg_interface }}.conf"
+    mode: 0600
+
+- name: Enable and start wireguard service
+  service:
+    name: "wg-quick@{{ wg_interface }}"
+    state: started
+    enabled: true
+
+#- name: Test reachability of Wireguard server
+#  ansible.netcommon.net_ping:
+#    dest: "{{ wg_server_ip }} "
+
+- name: Configure NFS
+  template:
+    src: idmapd.conf.j2
+    dest: /etc/idmapd.conf
+    mode: 0600
+
+- name: mount NFS
+  #when: nfs_bbb is defined and nfs_bbb|bool
+  mount:
+    src: "{{ wg_server_ip }}:/"
+    path: "{{ nfs_mount_dir }}"
+    backup: yes
+    fstype: nfs4
+    opts: "soft,intr,nodev,nosuid,noexec"
+    state: mounted
+    #register: nfsmount
+    # until: nfsmount is not failed
+    # retries: 3

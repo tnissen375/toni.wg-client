@@ -1,0 +1,7 @@
+---
+- name: Allow everything on wireguard secure interface
+  ufw:
+    rule: allow
+    direction: in
+    interface: "{{ wg_interface }}"
+

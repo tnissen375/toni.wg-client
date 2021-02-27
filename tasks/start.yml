@@ -30,7 +30,7 @@
     mode: 0600
 
 - name: mount NFS
-  #when: nfs_bbb is defined and nfs_bbb|bool
+  when: nfs is defined and nfs|bool #nfs_bbb is defined and nfs_bbb|bool
   mount:
     src: "{{ wg_server_ip }}:/"
     path: "{{ nfs_mount_dir }}"
@@ -38,6 +38,16 @@
     fstype: nfs4
     opts: "soft,intr,nodev,nosuid,noexec"
     state: mounted
-    #register: nfsmount
-    # until: nfsmount is not failed
-    # retries: 3
+  register: nfsmount
+  until: nfsmount is not failed
+  retries: 3
+
+# - block:
+#   - name: Reboot 
+#     shell: "sleep 5 && shutdown -r now 'Reboot for NFS'"
+#     async: 1
+#     poll: 0
+
+#   - name: Wait for server to come back online
+#     wait_for_connection:
+#       delay: 60

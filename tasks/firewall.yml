@@ -4,4 +4,11 @@
     rule: allow
     direction: in
     interface: "{{ wg_interface }}"
+  ignore_errors: yes
 
+- name: Allow out on wireguard secure interface
+  ufw:
+    rule: allow
+    interface: "{{ wg_interface }}"
+    direction: out
+  ignore_errors: yes

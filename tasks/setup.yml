@@ -1,7 +1,7 @@
 ---
-- name: Determine the running kernel release
-  command: uname -r
-  register: kernel_release
+# - name: Determine the running kernel release
+#   command: uname -r
+#   register: kernel_release
 
 # - name: Add wireguard PPA
 #   apt_repository:
@@ -10,7 +10,7 @@
 - name: Install wireguard && nfs client
   apt:
     name: 
-      - linux-headers-{{ kernel_release.stdout }}
+      #- linux-headers-{{ kernel_release.stdout }}
       - linux-headers-generic
       - wireguard-dkms
       - wireguard-tools

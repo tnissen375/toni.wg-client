@@ -16,7 +16,7 @@ Role Variables
 wg_interface: wg0 
 wg_dir: "/etc/wireguard" # configuration dir
 wg_server_ip: "10.8.0.1"
-nfs_mount_dir: "/mnt/shared"
+nfs_server_dir: "/mnt/shared"
 ```
 
 License

@@ -33,7 +33,7 @@
   when: nfs is defined and nfs|bool #nfs_bbb is defined and nfs_bbb|bool
   mount:
     src: "{{ wg_server_ip }}:/"
-    path: "{{ nfs_mount_dir }}"
+    path: "{{ nfs_server_dir }}"
     backup: yes
     fstype: nfs4
     opts: "soft,intr,nodev,nosuid,noexec"
